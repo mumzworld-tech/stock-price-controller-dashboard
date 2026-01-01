@@ -1,0 +1,18 @@
+{
+  "editor.defaultFormatter": "prettier.prettier-vscode",
+  "editor.formatOnSave": true,
+  "cSpell.words": [],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "prettier.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "prettier.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "prettier.prettier-vscode"
+  }
+}
