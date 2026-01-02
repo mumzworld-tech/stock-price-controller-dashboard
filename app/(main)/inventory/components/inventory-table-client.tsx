@@ -26,7 +26,14 @@ export function InventoryTableClient() {
     arrayKeys: ['fulfillmentModel'],
   });
 
-  const { columnVisibility, columnOrder, onColumnVisibilityChange, onColumnOrderChange } = useTableState({
+  const {
+    columnVisibility,
+    columnOrder,
+    columnSizing,
+    onColumnVisibilityChange,
+    onColumnOrderChange,
+    onColumnSizingChange,
+  } = useTableState({
     key: 'inventory',
     defaultVisibility: defaultColumnVisibility,
   });
@@ -35,12 +42,15 @@ export function InventoryTableClient() {
     data,
     columns: inventoryColumns,
     getCoreRowModel: getCoreRowModel(),
+    columnResizeMode: 'onChange',
     state: {
       columnVisibility,
       columnOrder,
+      columnSizing,
     },
     onColumnVisibilityChange,
     onColumnOrderChange,
+    onColumnSizingChange,
   });
 
   // Create a stable key from params for dependency tracking

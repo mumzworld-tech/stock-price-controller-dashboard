@@ -23,50 +23,56 @@ function formatPrice(price: number | null): string {
 }
 
 export const inventoryColumns: ColumnDef<InventoryItem>[] = [
-  { accessorKey: 'id', header: 'ID' },
-  { accessorKey: 'sku', header: 'SKU' },
+  { accessorKey: 'id', header: 'ID', meta: { copyable: true } },
+  { accessorKey: 'sku', header: 'SKU', meta: { copyable: true } },
   { accessorKey: 'countryCode', header: 'Country' },
   {
     id: 'fulfillmentModel',
     accessorFn: (row) => row.fulfillmentModel?.fulfillmentModel ?? '-',
     header: 'Fulfillment Model',
   },
-  { accessorKey: 'sourceCode', header: 'Source Code' },
-  { accessorKey: 'vendorId', header: 'Vendor ID' },
-  { accessorKey: 'vendorName', header: 'Vendor' },
-  { accessorKey: 'vendorPriority', header: 'Vendor Priority' },
-  { accessorKey: 'origin', header: 'Origin' },
+  { accessorKey: 'sourceCode', header: 'Source Code', meta: { copyable: true } },
+  { accessorKey: 'vendorId', header: 'Vendor ID', meta: { copyable: true } },
+  { accessorKey: 'vendorName', header: 'Vendor', meta: { copyable: true } },
+  { accessorKey: 'vendorPriority', header: 'Vendor Priority', meta: { copyable: true } },
+  { accessorKey: 'origin', header: 'Origin', meta: { copyable: true } },
   {
     accessorKey: 'quantity',
     header: 'Stock',
     cell: ({ row }) => row.original.quantity?.toLocaleString() ?? '-',
+    meta: { copyable: true },
   },
   {
     accessorKey: 'sellingPrice',
     header: 'Selling Price',
     cell: ({ row }) => formatPrice(row.original.sellingPrice),
+    meta: { copyable: true },
   },
   {
     accessorKey: 'costPrice',
     header: 'Cost Price',
     cell: ({ row }) => formatPrice(row.original.costPrice),
+    meta: { copyable: true },
   },
   {
     accessorKey: 'promoPrice',
     header: 'Promo Price',
     cell: ({ row }) => formatPrice(row.original.promoPrice),
+    meta: { copyable: true },
   },
   {
     accessorKey: 'promoStartDate',
     header: 'Promo Start',
     cell: ({ row }) => formatDate(row.original.promoStartDate),
+    meta: { copyable: true },
   },
   {
     accessorKey: 'promoEndDate',
     header: 'Promo End',
     cell: ({ row }) => formatDate(row.original.promoEndDate),
+    meta: { copyable: true },
   },
-  { accessorKey: 'shippingTime', header: 'Shipping Time' },
+  { accessorKey: 'shippingTime', header: 'Shipping Time', meta: { copyable: true } },
   {
     accessorKey: 'isActive',
     header: 'Active',
@@ -76,18 +82,21 @@ export const inventoryColumns: ColumnDef<InventoryItem>[] = [
     accessorKey: 'createdAt',
     header: 'Created',
     cell: ({ row }) => formatDateTime(row.original.createdAt),
+    meta: { copyable: true },
   },
   {
     accessorKey: 'updatedAt',
     header: 'Updated',
     cell: ({ row }) => formatDateTime(row.original.updatedAt),
+    meta: { copyable: true },
   },
   {
     accessorKey: 'deletedAt',
     header: 'Deleted',
     cell: ({ row }) => formatDateTime(row.original.deletedAt),
+    meta: { copyable: true },
   },
-  { accessorKey: 'inventoryTrackingId', header: 'Tracking ID' },
+  { accessorKey: 'inventoryTrackingId', header: 'Tracking ID', meta: { copyable: true } },
 ];
 
 export const defaultColumnVisibility: VisibilityState = {
