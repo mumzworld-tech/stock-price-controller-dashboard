@@ -2,11 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import * as React from 'react';
+import { ComponentProps } from 'react';
 
 import { navRouteGroups } from '@/components/nav/data/nav-routes';
 import { NavGroup } from '@/components/nav/nav-group';
-import { NavSkeleton } from '@/components/nav/nav-skeleton';
 import { NavUser } from '@/components/nav/nav-user';
 import {
   Sidebar,
@@ -20,7 +19,7 @@ import {
 import { useSession } from '@/lib/auth-client';
 import Logo from '@/public/img/logo.png';
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const { data: session, isPending } = useSession();
 
   const userData = session?.user
@@ -53,7 +52,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavGroup key={index} title={group.title} items={group.routes} />
         ))}
       </SidebarContent>
-      <SidebarFooter>{isPending ? <NavSkeleton /> : userData && <NavUser user={userData} />}</SidebarFooter>
+      <SidebarFooter>{!isPending && userData && <NavUser user={userData} />}</SidebarFooter>
     </Sidebar>
   );
 }

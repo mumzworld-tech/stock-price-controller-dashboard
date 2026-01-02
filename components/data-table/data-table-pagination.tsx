@@ -18,7 +18,7 @@ const PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
 export function DataTablePagination({ pagination, limit, onPageChange, onLimitChange }: DataTablePaginationProps) {
   if (!pagination) return null;
 
-  const { page, total_pages, total, filtered, has_previous, has_next } = pagination;
+  const { page, totalPages, total, filtered, hasPrevious, hasNext } = pagination;
 
   const from = (page - 1) * limit + 1;
   const to = Math.min(page * limit, filtered);
@@ -37,19 +37,19 @@ export function DataTablePagination({ pagination, limit, onPageChange, onLimitCh
       {/* Center - Page info and navigation */}
       <div className="flex flex-col items-center gap-2">
         <div className="text-sm whitespace-nowrap">
-          Page {page} of {total_pages || 1}
+          Page {page} of {totalPages || 1}
         </div>
         <div className="flex items-center gap-1">
-          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(1)} disabled={!has_previous}>
+          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(1)} disabled={!hasPrevious}>
             <ChevronsLeft className="size-4" />
           </Button>
-          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(page - 1)} disabled={!has_previous}>
+          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(page - 1)} disabled={!hasPrevious}>
             <ChevronLeft className="size-4" />
           </Button>
-          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(page + 1)} disabled={!has_next}>
+          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(page + 1)} disabled={!hasNext}>
             <ChevronRight className="size-4" />
           </Button>
-          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(total_pages)} disabled={!has_next}>
+          <Button variant="outline" size="icon-sm" onClick={() => onPageChange(totalPages)} disabled={!hasNext}>
             <ChevronsRight className="size-4" />
           </Button>
         </div>

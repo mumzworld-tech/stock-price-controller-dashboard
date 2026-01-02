@@ -31,7 +31,7 @@ export function DataTable<TData, TValue>({
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative overflow-x-auto">
       {showLoadingBar && headerHeight > 0 && (
         <div className="absolute left-0 right-0 h-[3px] overflow-hidden z-10" style={{ top: headerHeight }}>
           <div className="h-full w-full bg-primary/20" />
