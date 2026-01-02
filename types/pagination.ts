@@ -18,12 +18,13 @@ export interface ApiPagination {
 
 // Helper to convert API pagination to component format
 export function mapApiPagination(api: ApiPagination): Pagination {
+  const totalPages = Math.ceil(api.total / api.limit);
   return {
     page: api.page,
-    totalPages: api.totalPages,
     total: api.total,
     filtered: api.total,
+    totalPages: totalPages,
     hasPrevious: api.page > 1,
-    hasNext: api.page < api.totalPages,
+    hasNext: api.page < totalPages,
   };
 }

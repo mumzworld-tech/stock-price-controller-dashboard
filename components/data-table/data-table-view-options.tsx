@@ -23,7 +23,11 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
   const orderedColumns = table.getAllLeafColumns().filter((column) => column.getCanHide());
 
   const filteredColumns = search
-    ? orderedColumns.filter((column) => column.id.toLowerCase().replace(/_/g, ' ').includes(search.toLowerCase()))
+    ? orderedColumns.filter((column) => {
+        const headerValue = column.columnDef.header;
+        const displayName = typeof headerValue === 'string' ? headerValue : column.id.replace(/_/g, ' ');
+        return displayName.toLowerCase().includes(search.toLowerCase());
+      })
     : orderedColumns;
 
   const handleDragStart = (e: React.DragEvent, columnId: string) => {
@@ -100,6 +104,8 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
             filteredColumns.map((column) => {
               const isDragging = draggedId === column.id;
               const isDragOver = dragOverId === column.id;
+              const headerValue = column.columnDef.header;
+              const displayName = typeof headerValue === 'string' ? headerValue : column.id.replace(/_/g, ' ');
 
               return (
                 <div
@@ -121,7 +127,7 @@ export function DataTableViewOptions<TData>({ table }: DataTableViewOptionsProps
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) => column.toggleVisibility(!!value)}
                   />
-                  <span className="flex-1 text-sm capitalize select-none">{column.id.replace(/_/g, ' ')}</span>
+                  <span className="flex-1 text-sm select-none">{displayName}</span>
                   {!search && <GripVertical className="size-4 text-muted-foreground" />}
                 </div>
               );

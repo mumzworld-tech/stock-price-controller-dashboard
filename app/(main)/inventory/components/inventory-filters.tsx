@@ -51,6 +51,14 @@ export function InventoryFilters({ filters, onFilterChange, onReset }: Inventory
         </SelectContent>
       </Select>
 
+      {/* Fulfillment Model Faceted Filter */}
+      <DataTableFacetedFilter
+        title="Fulfillment"
+        options={FULFILLMENT_MODEL_OPTIONS.map((opt) => ({ label: opt.label, value: opt.value }))}
+        selectedValues={filters.fulfillmentModel}
+        onChange={(values) => onFilterChange('fulfillmentModel', values)}
+      />
+
       {/* Vendor Search */}
       <InputGroup className="bg-white w-[200px]">
         <InputGroupAddon>
@@ -63,17 +71,9 @@ export function InventoryFilters({ filters, onFilterChange, onReset }: Inventory
         />
       </InputGroup>
 
-      {/* Fulfillment Model Faceted Filter */}
-      <DataTableFacetedFilter
-        title="Fulfillment"
-        options={FULFILLMENT_MODEL_OPTIONS.map((opt) => ({ label: opt.label, value: opt.value }))}
-        selectedValues={filters.fulfillmentModel}
-        onChange={(values) => onFilterChange('fulfillmentModel', values)}
-      />
-
       {/* Reset Button */}
       {hasActiveFilters && (
-        <Button variant="ghost" size="sm" onClick={onReset} className="h-8 px-2">
+        <Button variant="ghost" size="sm" onClick={onReset} className="px-2">
           <X className="size-4" />
           Clear
         </Button>

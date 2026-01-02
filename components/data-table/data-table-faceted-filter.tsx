@@ -47,12 +47,12 @@ export function DataTableFacetedFilter({ title, options, selectedValues, onChang
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
+        <Button variant="outline" className="border-dashed">
           <PlusCircle className="size-4" />
           {title}
           {selectedLabels.length > 0 && (
             <>
-              <Separator orientation="vertical" className="mx-2 h-4" />
+              <Separator orientation="vertical" className="mx-2" />
               <div className="flex gap-1">
                 {selectedLabels.length > 2 ? (
                   <Badge variant="secondary" className="rounded-sm px-1 font-normal">
