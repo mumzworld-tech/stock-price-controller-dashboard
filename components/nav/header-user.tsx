@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useSession } from '@/lib/auth-client';
 import { getUserInitials } from '@/lib/utils';
+import { NavItemUser } from './interfaces/nav.interface';
 
 export function HeaderUser() {
   const { data: session, isPending } = useSession();
@@ -19,8 +20,8 @@ export function HeaderUser() {
   const userData = {
     name: session.user.name,
     email: session.user.email,
-    image: session.user.image,
-  };
+    image: session.user.image as string,
+  } satisfies NavItemUser;
 
   return (
     <DropdownMenu>
