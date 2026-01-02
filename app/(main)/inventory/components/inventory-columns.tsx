@@ -7,9 +7,8 @@ import { formatDate, formatDateTime } from '@/lib/utils';
 import { InventoryItem } from '@/types/inventory';
 import { CircleDollarSign, Package } from 'lucide-react';
 
-function renderDateTime(dateString: string | null) {
-  const formatted = formatDateTime(dateString);
-  if (!formatted) return '-';
+function renderDateTime(dateString: string) {
+  const formatted = formatDateTime({ dateString });
 
   return (
     <div className="flex flex-col">
@@ -133,7 +132,11 @@ export const inventoryColumns: ColumnDef<InventoryItem>[] = [
   {
     accessorKey: 'deletedAt',
     header: 'Deleted At',
-    cell: ({ row }) => renderDateTime(row.original.deletedAt),
+    cell: ({ row }) => {
+      const date = row.original.deletedAt;
+      if (!date) return '-';
+      renderDateTime(date);
+    },
     meta: { copyable: true },
   },
   { accessorKey: 'inventoryTrackingId', header: 'Tracking ID', meta: { copyable: true } },

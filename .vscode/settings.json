@@ -14,5 +14,6 @@
   },
   "[css]": {
     "editor.defaultFormatter": "prettier.prettier-vscode"
-  }
+  },
+  "typescript.autoClosingTags": false
 }

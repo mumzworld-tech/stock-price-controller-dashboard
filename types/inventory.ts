@@ -29,19 +29,23 @@ export interface InventoryItem {
 }
 
 export type InventoryFilters = {
-  sku: string;
-  countryCode: CountryCode | '';
-  vendor: string;
-  fulfillmentModel: string[];
+  sku?: string | null;
+  countryCode?: CountryCode | null;
+  vendor: string | null;
+  fulfillmentModel?: string[] | null;
   page: number;
   limit: number;
+  updatedFrom?: string | null;
+  updatedTo?: string | null;
 };
 
 export const DEFAULT_INVENTORY_FILTERS: InventoryFilters = {
-  sku: '',
-  countryCode: '',
-  vendor: '',
-  fulfillmentModel: [],
+  sku: null,
+  countryCode: null,
+  vendor: null,
+  fulfillmentModel: null,
   page: 1,
   limit: 10,
+  updatedFrom: null,
+  updatedTo: null,
 };

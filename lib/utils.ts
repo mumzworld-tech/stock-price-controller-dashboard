@@ -42,16 +42,20 @@ export function formatRelativeTime(dt: DateTime): string {
   }
 }
 
-export function formatDateTime(dateString: string | null): {
+export function formatDateTime({
+  dateString,
+  format = 'MMM dd, yyyy hh:mm:ss a',
+}: {
+  dateString: string;
+  format?: string;
+}): {
   relativeTime: string;
   fullDateTime: string;
-} | null {
-  if (!dateString) return null;
+} {
   const dt = DateTime.fromISO(dateString);
-  if (!dt.isValid) return null;
 
   return {
     relativeTime: formatRelativeTime(dt),
-    fullDateTime: dt.toFormat('MMM dd, yyyy hh:mm:ss a'),
+    fullDateTime: dt.toFormat(format),
   };
 }

@@ -21,7 +21,7 @@ export function InventoryTableClient() {
   const [isLoading, setIsLoading] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const { params, setParam, resetParams } = useUrlParams<InventoryFilters>({
+  const { params, setParam, setParams, resetParams } = useUrlParams<InventoryFilters>({
     defaults: DEFAULT_INVENTORY_FILTERS,
     arrayKeys: ['fulfillmentModel'],
   });
@@ -104,6 +104,13 @@ export function InventoryTableClient() {
     [setParam],
   );
 
+  const handleFiltersChange = useCallback(
+    (updates: Partial<InventoryFilters>) => {
+      setParams(updates);
+    },
+    [setParams],
+  );
+
   const handlePageChange = useCallback(
     (page: number) => {
       setParam('page', page);
@@ -125,7 +132,12 @@ export function InventoryTableClient() {
     <div className="space-y-4 min-w-0">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <InventoryFiltersComponent filters={params} onFilterChange={handleFilterChange} onReset={resetParams} />
+        <InventoryFiltersComponent
+          filters={params}
+          onFilterChange={handleFilterChange}
+          onFiltersChange={handleFiltersChange}
+          onReset={resetParams}
+        />
         <DataTableViewOptions table={table} />
       </div>
 
