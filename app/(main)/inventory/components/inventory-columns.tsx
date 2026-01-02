@@ -1,24 +1,25 @@
 'use client';
 
 import { ColumnDef, VisibilityState } from '@tanstack/react-table';
-import { DateTime } from 'luxon';
 
+import { Badge } from '@/components/ui/badge';
+import { formatDate, formatDateTime } from '@/lib/utils';
 import { InventoryItem } from '@/types/inventory';
+import { CircleDollarSign, Package } from 'lucide-react';
 
-function formatDate(dateString: string | null): string {
-  if (!dateString) return '-';
-  const dt = DateTime.fromISO(dateString);
-  return dt.isValid ? dt.toFormat('MMM d, yyyy') : '-';
+function renderDateTime(dateString: string | null) {
+  const formatted = formatDateTime(dateString);
+  if (!formatted) return '-';
+
+  return (
+    <div className="flex flex-col">
+      <span>{formatted.relativeTime}</span>
+      <span className="text-muted-foreground">{formatted.fullDateTime}</span>
+    </div>
+  );
 }
 
-function formatDateTime(dateString: string | null): string {
-  if (!dateString) return '-';
-  const dt = DateTime.fromISO(dateString);
-  return dt.isValid ? dt.toFormat('MMM d, yyyy HH:mm') : '-';
-}
-
-function formatPrice(price: number | null): string {
-  if (price === null) return '-';
+function formatPrice(price: number): string {
   return price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
@@ -39,25 +40,64 @@ export const inventoryColumns: ColumnDef<InventoryItem>[] = [
   {
     accessorKey: 'quantity',
     header: 'Stock',
-    cell: ({ row }) => row.original.quantity?.toLocaleString() ?? '-',
+    cell: ({ row }) => {
+      const stock = row.original.quantity?.toLocaleString();
+      if (!stock) return '-';
+      return (
+        <Badge variant="secondary" className="text-orange-400 bg-orange-400/20">
+          <Package />
+          {stock}
+        </Badge>
+      );
+    },
     meta: { copyable: true },
   },
   {
     accessorKey: 'sellingPrice',
     header: 'Selling Price',
-    cell: ({ row }) => formatPrice(row.original.sellingPrice),
+    cell: ({ row }) => {
+      const price = row.original.sellingPrice;
+      if (price === null) return '-';
+      const formattedPrice = formatPrice(price);
+      return (
+        <Badge variant="secondary" className="text-green-400 bg-green-400/10">
+          <CircleDollarSign />
+          {formattedPrice}
+        </Badge>
+      );
+    },
     meta: { copyable: true },
   },
   {
     accessorKey: 'costPrice',
     header: 'Cost Price',
-    cell: ({ row }) => formatPrice(row.original.costPrice),
+    cell: ({ row }) => {
+      const price = row.original.costPrice;
+      if (price === null) return '-';
+      const formattedPrice = formatPrice(price);
+      return (
+        <Badge variant="secondary" className="text-green-400 bg-green-400/10">
+          <CircleDollarSign />
+          {formattedPrice}
+        </Badge>
+      );
+    },
     meta: { copyable: true },
   },
   {
     accessorKey: 'promoPrice',
     header: 'Promo Price',
-    cell: ({ row }) => formatPrice(row.original.promoPrice),
+    cell: ({ row }) => {
+      const price = row.original.promoPrice;
+      if (price === null) return '-';
+      const formattedPrice = formatPrice(price);
+      return (
+        <Badge variant="secondary" className="text-green-400 bg-green-400/10">
+          <CircleDollarSign />
+          {formattedPrice}
+        </Badge>
+      );
+    },
     meta: { copyable: true },
   },
   {
@@ -80,20 +120,20 @@ export const inventoryColumns: ColumnDef<InventoryItem>[] = [
   },
   {
     accessorKey: 'createdAt',
-    header: 'Created',
-    cell: ({ row }) => formatDateTime(row.original.createdAt),
+    header: 'Created At',
+    cell: ({ row }) => renderDateTime(row.original.createdAt),
     meta: { copyable: true },
   },
   {
     accessorKey: 'updatedAt',
-    header: 'Updated',
-    cell: ({ row }) => formatDateTime(row.original.updatedAt),
+    header: 'Updated At',
+    cell: ({ row }) => renderDateTime(row.original.updatedAt),
     meta: { copyable: true },
   },
   {
     accessorKey: 'deletedAt',
-    header: 'Deleted',
-    cell: ({ row }) => formatDateTime(row.original.deletedAt),
+    header: 'Deleted At',
+    cell: ({ row }) => renderDateTime(row.original.deletedAt),
     meta: { copyable: true },
   },
   { accessorKey: 'inventoryTrackingId', header: 'Tracking ID', meta: { copyable: true } },
