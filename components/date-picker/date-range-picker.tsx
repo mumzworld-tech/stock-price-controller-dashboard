@@ -85,7 +85,7 @@ export function DateRangePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" id="date" className="w-50 text-left">
+        <Button variant="outline" id="date" className="sm:w-50 text-left">
           {PrependIcon && <PrependIcon />}
           <div className="truncate w-100">{hasValue ? `${fromDisplay} - ${toDisplay}` : label}</div>
           <ChevronDownIcon />

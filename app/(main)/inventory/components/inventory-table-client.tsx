@@ -1,9 +1,11 @@
 'use client';
 
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table';
+import { RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { DataTable, DataTablePagination, DataTableViewOptions } from '@/components/data-table';
+import { Button } from '@/components/ui/button';
 import { useTableState } from '@/hooks/use-table-state';
 import { useUrlParams } from '@/hooks/use-url-params';
 import { DEFAULT_INVENTORY_FILTERS, InventoryFilters, InventoryItem } from '@/types/inventory';
@@ -56,46 +58,49 @@ export function InventoryTableClient() {
   // Create a stable key from params for dependency tracking
   const paramsKey = JSON.stringify(params);
 
-  // Fetch inventory data when params change
-  useEffect(() => {
+  const loadData = useCallback(async () => {
     // Cancel previous request
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
     abortControllerRef.current = new AbortController();
 
-    const loadData = async () => {
-      setIsLoading(true);
-      setError(null);
+    setIsLoading(true);
+    setError(null);
 
-      try {
-        const response: InventoryResponse = await fetchInventory(params);
+    try {
+      const response: InventoryResponse = await fetchInventory(params);
 
-        if (response.success) {
-          setData(response.data);
-          setPagination(response.pagination);
-        } else {
-          setError(response.message || 'Failed to fetch inventory');
-          setData([]);
-          setPagination(null);
-        }
-      } catch (err) {
-        if (err instanceof Error && err.name !== 'AbortError') {
-          setError(err.message);
-        }
-      } finally {
-        setIsLoading(false);
-        setIsInitialLoading(false);
+      if (response.success) {
+        setData(response.data);
+        setPagination(response.pagination);
+      } else {
+        setError(response.message || 'Failed to fetch inventory');
+        setData([]);
+        setPagination(null);
       }
-    };
+    } catch (err) {
+      if (err instanceof Error && err.name !== 'AbortError') {
+        setError(err.message);
+      }
+    } finally {
+      setIsLoading(false);
+      setIsInitialLoading(false);
+    }
+  }, [params]);
 
+  // Fetch inventory data when params change
+  useEffect(() => {
     loadData();
 
     return () => {
       abortControllerRef.current?.abort();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [paramsKey]);
+  }, [loadData]);
+
+  const handleRefresh = useCallback(() => {
+    loadData();
+  }, [loadData]);
 
   const handleFilterChange = useCallback(
     <K extends keyof InventoryFilters>(key: K, value: InventoryFilters[K]) => {
@@ -131,14 +136,20 @@ export function InventoryTableClient() {
   return (
     <div className="space-y-4 min-w-0">
       {/* Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2">
         <InventoryFiltersComponent
           filters={params}
           onFilterChange={handleFilterChange}
           onFiltersChange={handleFiltersChange}
           onReset={resetParams}
         />
-        <DataTableViewOptions table={table} />
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={handleRefresh} disabled={isLoading} className="max-sm:size-8 max-sm:p-0">
+            <RefreshCw className={`size-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <span className="max-sm:hidden">Refresh</span>
+          </Button>
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
 
       {/* Error State */}
