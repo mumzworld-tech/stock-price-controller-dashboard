@@ -2,8 +2,9 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 export async function proxy(request: NextRequest) {
-  // Check for Better Auth session cookie
-  const sessionCookie = request.cookies.get('better-auth.session_token');
+  // Check for Better Auth session cookie (secure prefix used in production/HTTPS)
+  const sessionCookie =
+    request.cookies.get('__Secure-better-auth.session_token') || request.cookies.get('better-auth.session_token');
 
   if (!sessionCookie) {
     const signInUrl = new URL('/sign-in', request.url);
